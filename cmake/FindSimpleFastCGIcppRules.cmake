@@ -105,9 +105,9 @@ if(APPLE)
    project(${LOCAL_CMAKE_PROJECT_NAME} CXX)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -Wunused -g -Wall -W")
    set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -std=c++1z -Wunused -g -Wall -W")
-   set(FASTCGI_INCLUDE "/usr/include") # TODO: update to homebrew path if possible
-   set(FASTCGI_LINK "/usr/lib64") # TODO: update to homebrew path if possible
-   set(FASTCGI_NAME "fcgi") # TODO: update to homebrew path if possible
+   set(FASTCGI_INCLUDE "/usr/local/Cellar/fcgi/2.4.0/include") 
+   set(FASTCGI_LINK "/usr/local/Cellar/fcgi/2.4.0/lib") 
+   set(FASTCGI_NAME "fcgi") 
 elseif(UNIX)
   find_program(LSB_RELEASE lsb_release)
   execute_process(COMMAND ${LSB_RELEASE} -is OUTPUT_VARIABLE LSB_RELEASE_ID_SHORT OUTPUT_STRIP_TRAILING_WHITESPACE)
