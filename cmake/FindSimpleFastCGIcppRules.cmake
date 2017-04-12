@@ -105,6 +105,9 @@ if(APPLE)
    project(${LOCAL_CMAKE_PROJECT_NAME} CXX)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -Wunused -g -Wall -W")
    set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -std=c++1z -Wunused -g -Wall -W")
+   set(FASTCGI_INCLUDE "/usr/include") # TODO: update to homebrew path if possible
+   set(FASTCGI_LINK "/usr/lib64") # TODO: update to homebrew path if possible
+   set(FASTCGI_NAME "fcgi") # TODO: update to homebrew path if possible
 elseif(UNIX)
   find_program(LSB_RELEASE lsb_release)
   execute_process(COMMAND ${LSB_RELEASE} -is OUTPUT_VARIABLE LSB_RELEASE_ID_SHORT OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -114,9 +117,15 @@ elseif(UNIX)
    set(CMAKE_CXX_COMPILER "/usr/bin/g++-6")
    project(${LOCAL_CMAKE_PROJECT_NAME} CXX)
   endif("${LSB_RELEASE_ID_SHORT}" MATCHES "Debian")
+  set(FASTCGI_INCLUDE "/usr/include")
+  set(FASTCGI_LINK "/usr/lib64")
+  set(FASTCGI_NAME "fcgi")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fPIC -std=gnu++1z -Wunused -g -Wall -W")
   set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -lpthread -fPIC -std=gnu++1z -Wunused -g -Wall -W")
 endif(APPLE)
+
+#### Fastcgi: TODO Apple ####
+
 
 ##########################################
 # CXXFLAGS/LFLAGS external configuration #

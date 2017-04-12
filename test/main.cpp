@@ -9,6 +9,9 @@
 
 BOOST_AUTO_TEST_CASE( test000 ) {
    BOOST_TEST_MESSAGE( "\ntest000\n" );
-   BOOST_CHECK( true );
+
+   bool result { SimpleFastCGIcpp::helloWorld() };
+
+   BOOST_CHECK( result );
 }
 

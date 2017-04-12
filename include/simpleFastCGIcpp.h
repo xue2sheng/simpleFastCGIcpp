@@ -39,6 +39,8 @@
 ///@brief Simple FastCGI C++ Utilities
 namespace SimpleFastCGIcpp {
 
+bool helloWorld();
+
 } // namespace
 
 #endif // SIMPLEFASTCGICPP_H
