@@ -33,3 +33,10 @@ So the library will try to connect to the port **7000** and the browser to the e
 
 	 http://0.0.0.0/dspModule
 
+Or if you want to include extra information through *curl*:
+
+	curl -vvv -H 'Content-Type: application/json' "http://0.0.0.0/dspModule?rtb=1&ssp=98866&z=5333" -d '{"id": "FxAaGosSaM"}'
+
+
+
+

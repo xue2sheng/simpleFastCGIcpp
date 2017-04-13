@@ -127,7 +127,8 @@ protected:
 
 
     struct HandlerBase {
-        virtual int operator()(FastCGIRequest&);
+	virtual int operator()(FastCGIRequest&);
+	virtual ~HandlerBase() = default;
     };
 
     struct StaticHandler : public HandlerBase {

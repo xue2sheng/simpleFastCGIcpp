@@ -240,11 +240,13 @@ FastCGIServer::process(int timeout_ms)
 
     int select_result = select(nfd + 1, &fs_read, &fs_write, NULL,
         timeout_ms < 0 ? NULL : &tv);
-    if (select_result == -1)
-        if (errno == EINTR)
-            return;
-        else
-            throw std::runtime_error("select() failed");
+    if (select_result == -1) {
+	if (errno == EINTR) {
+	    return;
+	} else {
+	    throw std::runtime_error("select() failed");
+	}
+    }
 
     for (std::vector<int>::const_iterator it = listen_sockets.begin();
             it != listen_sockets.end(); ++it)
@@ -268,14 +270,15 @@ FastCGIServer::process(int timeout_ms)
 
         if (FD_ISSET(read_socket, &fs_read)) {
             int read_result = read(read_socket, buffer, sizeof(buffer));
-            if (read_result == -1)
-                if (errno == ECONNRESET)
-                    goto close_socket;
-                else
-                    throw std::runtime_error("read() on socket failed");
-            if (read_result == 0)
-                it->second->close_socket = true;
-            else {
+	    if (read_result == -1) {
+		if (errno == ECONNRESET)
+		    goto close_socket;
+		else
+		    throw std::runtime_error("read() on socket failed");
+	    }
+	    if (read_result == 0)
+		it->second->close_socket = true;
+	    else {
                 it->second->input_buffer.append(buffer, read_result);
                 process_connection_read(*it->second);
             }
@@ -287,8 +290,8 @@ FastCGIServer::process(int timeout_ms)
             int write_result = write(read_socket,
                 it->second->output_buffer.data(),
                 it->second->output_buffer.size());
-            if (write_result == -1)
-                throw std::runtime_error("write() failed");
+	    if (write_result == -1)
+		throw std::runtime_error("write() failed");
             it->second->output_buffer.erase(0, write_result);
         }
 
@@ -300,8 +303,8 @@ FastCGIServer::process(int timeout_ms)
             Connection* connection = it->second;
             read_sockets.erase(it++);
             delete connection;
-        } else
-            ++it;
+	} else
+	    ++it;
     }
 }
 
@@ -430,10 +433,10 @@ FastCGIServer::process_connection_read(Connection& connection)
                 break;
 
             RequestInfo& request = *it->second;
-            if (!request.params_closed)
-                if (content_length != 0)
-                    request.params_buffer.append(content, content_length);
-                else {
+	    if (!request.params_closed) {
+		if (content_length != 0)
+		    request.params_buffer.append(content, content_length);
+		else {
                     request.params = parse_pairs(request.params_buffer.data(),
                         request.params_buffer.size());
                     request.params_buffer.clear();
@@ -446,16 +449,17 @@ FastCGIServer::process_connection_read(Connection& connection)
                             request.status = (*handle_complete)(request);
                     }
                     process_write_request(connection, request_id, request);
-                }
+		}
+	    }
             break;
         }
         case FCGI_STDIN: {
             RequestList::iterator it = connection.requests.find(request_id);
-            if (it == connection.requests.end())
-                break;
+	    if (it == connection.requests.end())
+		break;
 
             RequestInfo& request = *it->second;
-            if (!request.in_closed)
+	    if (!request.in_closed) {
                 if (content_length != 0) {
                     request.in.append(content, content_length);
                     if (request.params_closed && request.status == 0) {
@@ -468,7 +472,8 @@ FastCGIServer::process_connection_read(Connection& connection)
                         request.status = (*handle_complete)(request);
                         process_write_request(connection, request_id, request);
                     }
-                }
+		}
+	    }
             break;
         }
         case FCGI_DATA:

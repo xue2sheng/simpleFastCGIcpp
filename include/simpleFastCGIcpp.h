@@ -36,8 +36,21 @@
  *
  */
 
+#include <map>
+#include <string>
+
 ///@brief Simple FastCGI C++ Utilities
 namespace SimpleFastCGIcpp {
+
+class Wrapper {
+public:
+	Wrapper();
+
+	virtual ~Wrapper();
+private:
+  void* pointer_{nullptr}; // in order to avoid dependencies on fcgicc clasess
+
+};
 
 bool helloWorld();
 
