@@ -49,17 +49,14 @@ public:
 
 	request.out.append("Content-Type: application/json\r\n\r\n");
 	request.out.append("{");
-	request.out.append("\"request_uri\":");
-	request.out.append("\"" + request.params[REQUEST_URI] + "\"");
 	if(request.params.count("REQUEST_BODY"))
 	{
 		const std::string& body {request.params[REQUEST_BODY]};
 		if( not body.empty() ) {
-			request.out.append(",\"request_body\":");
-			request.out.append(body);
+			request.out.append("\"id\":\"FxAaGosSaM\"");
 		}
 	}
-	request.out.append("}\r\n");
+	request.out.append("}");
 	return 0;
     }
 };
